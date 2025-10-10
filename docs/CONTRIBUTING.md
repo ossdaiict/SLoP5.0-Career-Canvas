@@ -12,8 +12,3 @@ Thank you for your interest in contributing!
 
 ## Commit Messages
 - Follow Conventional Commits
-
-## Pull Requests
-- Link related issues
-- Update docs/tests where applicable
-- Pass linting: `npm run lint`

@@ -1,7 +1,7 @@
-export default function Header(props) {
-	return (
-		<header className="container">
-			<h1>CareerCanvas</h1>
-		</header>
-	);
+export default function Header(){
+    return (
+        <header className="bg-blue-600 text-white p-4">
+            <h1 className="text-2xl font-bold">CareerCanvas</h1>
+        </header>
+    );
 }
