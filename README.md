@@ -14,14 +14,8 @@ CareerCanvas is a modern resume builder that showcases the power of HTML5 Canvas
 - Live preview using Canvas API
 - Clean and organized form sections
 
-### 2. Canvas Lab
-- Interactive HTML5 Canvas playground
-- Drawing tools: Pen and Eraser
-- Color picker for creative freedom
-- Quick shape tools: Circle, Rectangle, Triangle
-- Learn Canvas API through hands-on experimentation
 
-### 3. Landing Page
+### 2. Landing Page
 - Welcome page with project information
 - Overview of features and capabilities
 - Navigation to all sections
@@ -87,17 +81,7 @@ project/
 
 The Canvas API provides a way to draw graphics via JavaScript and the HTML `<canvas>` element. In this project, you'll see Canvas API used in two main ways:
 
-1. **Drawing Tool (Canvas Lab)**: Interactive drawing with mouse events
-2. **Resume Preview**: Rendering text and layouts programmatically
-
-### Key Canvas Concepts Used
-
-- `getContext('2d')`: Get the 2D rendering context
-- `fillRect()`: Draw filled rectangles
-- `strokeRect()`: Draw rectangle outlines
-- `fillText()`: Draw text
-- `beginPath()`, `arc()`, `stroke()`: Draw shapes
-- Mouse event handling for interactive drawing
+1. **Resume Preview**: Rendering text and layouts programmatically
 
 ## For Beginners
 
