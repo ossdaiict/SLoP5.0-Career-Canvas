@@ -15,7 +15,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="bg-blue-600 text-white p-4 relative z-30">
+    <header className="text-white p-4 relative z-30" style={{ backgroundColor: "#0e0e0eff" }}>
         {!isMobile && (
             <nav className="flex items-center text-lg">
                 <Link to="/" className="font-bold text-2xl hover:text-gray-200">
@@ -49,7 +49,7 @@ export default function Header() {
             </button>
 
             {open && (
-            <div className="absolute left-0 right-0 top-full bg-blue-600 px-4 py-3 shadow-lg">
+            <div className="absolute left-0 right-0 top-full px-4 py-3 shadow-lg" style={{ backgroundColor: "#0e0e0eff" }}>
                 <nav className="flex flex-col gap-2">
                     <Link
                         to="/home"
