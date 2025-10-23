@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import { Brain } from "lucide-react";
+import { useResume } from "../../state/ResumeContext";
 
-export default function Skills({
-  value = [],
-  onChange = () => {},
-  errors = {},
-}) {
-  const list = Array.isArray(value) ? value : [];
+export default function Skills() {
+  const { state, actions, validation } = useResume();
+  const list = Array.isArray(state.resume.skills) ? state.resume.skills : [];
+  const errors = state.ui.touched ? validation.skills : {};
   const [quick, setQuick] = useState("");
 
   const updateAt = (i, val) =>
-    onChange(list.map((s, idx) => (idx === i ? val : s)));
-  const remove = (i) => onChange(list.filter((_, idx) => idx !== i));
+    actions.setSection("skills", list.map((s, idx) => (idx === i ? val : s)));
+  const remove = (i) => actions.setSection("skills", list.filter((_, idx) => idx !== i));
   const quickAdd = () => {
     const parts = quick
       .split(",")
@@ -25,12 +24,12 @@ export default function Skills({
       setQuick("");
       return;
     }
-    onChange([...list, ...uniq]);
+    actions.setSection("skills", [...list, ...uniq]);
     setQuick("");
   };
 
   const fillExample = () => {
-    onChange([
+    actions.setSection("skills", [
       "JavaScript",
       "React",
       "Node.js",

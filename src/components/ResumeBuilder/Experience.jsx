@@ -1,15 +1,18 @@
 import React from "react";
 import { Briefcase } from "lucide-react";
+import { useResume } from "../../state/ResumeContext";
 
-export default function Experience({ value = [], onChange = () => { }, errors = [] }) {
-    const list = Array.isArray(value) ? value : [];
+export default function Experience() {
+    const { state, actions, validation } = useResume();
+    const list = Array.isArray(state.resume.experience) ? state.resume.experience : [];
+    const errors = state.ui.touched ? validation.experience : [];
 
-    const updateAt = (i, field, val) => onChange(list.map((it, idx) => (idx === i ? { ...it, [field]: val } : it)));
-    const add = () => onChange([...list, { company: "", role: "", duration: "", highlights: [] }]);
-    const remove = (i) => onChange(list.filter((_, idx) => idx !== i));
+    const updateAt = (i, field, val) => actions.setSection("experience", list.map((it, idx) => (idx === i ? { ...it, [field]: val } : it)));
+    const add = () => actions.setSection("experience", [...list, { company: "", role: "", duration: "", highlights: [] }]);
+    const remove = (i) => actions.setSection("experience", list.filter((_, idx) => idx !== i));
 
     const fillExample = () => {
-        onChange([
+        actions.setSection("experience", [
             {
                 company: "Tech Solutions Pvt. Ltd.",
                 role: "Software Engineer",

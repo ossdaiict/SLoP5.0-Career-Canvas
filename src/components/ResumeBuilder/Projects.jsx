@@ -1,18 +1,21 @@
 import React from "react";
 import { Rocket } from "lucide-react";
+import { useResume } from "../../state/ResumeContext";
 
-export default function Projects({ value = [], onChange = () => {}, errors = [] }) {
-  const list = Array.isArray(value) ? value : [];
+export default function Projects() {
+    const { state, actions, validation } = useResume();
+    const list = Array.isArray(state.resume.projects) ? state.resume.projects : [];
+    const errors = state.ui.touched ? validation.projects : [];
 
-  const updateAt = (i, field, val) => {
-    const next = list.map((it, idx) => (idx === i ? { ...it, [field]: val } : it));
-    onChange(next);
-  };
-  const add = () => onChange([...list, { title: "", description: "", link: "" }]);
-  const remove = (i) => onChange(list.filter((_, idx) => idx !== i));
+    const updateAt = (i, field, val) => {
+        const next = list.map((it, idx) => (idx === i ? { ...it, [field]: val } : it));
+        actions.setSection("projects", next);
+    };
+    const add = () => actions.setSection("projects", [...list, { title: "", description: "", link: "" }]);
+    const remove = (i) => actions.setSection("projects", list.filter((_, idx) => idx !== i));
 
   const fillExample = () =>
-    onChange([
+    actions.setSection("projects", [
       {
         title: "Realtime Chat Platform",
         description:
