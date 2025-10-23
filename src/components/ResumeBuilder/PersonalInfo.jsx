@@ -1,12 +1,19 @@
 import React from "react";
 import { User } from "lucide-react";
+import { useResume } from "../../state/ResumeContext";
 
-export default function PersonalInfo({ value = {}, onChange = () => {}, errors = {} }) {
-  const v = { name: "", email: "", phone: "", location: "", summary: "", ...value };
-  const handle = (e) => onChange({ ...v, [e.target.name]: e.target.value });
+export default function PersonalInfo() {
+    const { state, actions, validation } = useResume();
+    const v = { name: "", email: "", phone: "", location: "", summary: "", ...state.resume.personal };
+    const errors = state.ui.touched ? validation.personal : {};
 
-  const fillExample = () => {
-    onChange({
+    const handle = (e) => {
+        const next = { ...v, [e.target.name]: e.target.value };
+        actions.setSection("personal", next);
+    };
+
+    const fillExample = () =>
+  actions.setSection("personal", {
       name: "Rudra Ali Gonsalves",
       email: "name.surname@example.com",
       phone: "+91 12345 67890",
@@ -14,7 +21,6 @@ export default function PersonalInfo({ value = {}, onChange = () => {}, errors =
       summary:
         "Software engineer with 3+ years building web applications using React and Node.js. Focused on performance, maintainable code, and delivering user-centric features.",
     });
-  };
 
   return (
     <section className="cc-section" aria-labelledby="personal-heading">

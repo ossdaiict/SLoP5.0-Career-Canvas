@@ -6,98 +6,32 @@ import Skills from "../components/ResumeBuilder/Skills";
 import Projects from "../components/ResumeBuilder/Projects";
 import "../components/styles/resume.css";
 import resumeImage from "../assets/image.png";
+import { ResumeProvider, useResume } from "../state/ResumeContext";
 
-const EMPTY = {
-    personal: { name: "", email: "", phone: "", location: "", summary: "" },
-    education: [],
-    experience: [],
-    skills: [],
-    projects: [],
-};
-
-function validateEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-export default function Builder() {
-    const [resume, setResume] = useState(EMPTY);
-    const [touched, setTouched] = useState(false);
-    const [sending, setSending] = useState(false);
-    const [message, setMessage] = useState(null);
-
-    const setSection = (k, v) => setResume((r) => ({ ...r, [k]: v }));
-
-    const validation = useMemo(() => {
-        const issues = { personal: {}, education: [], experience: [], skills: {}, projects: [] };
-        const p = resume.personal || {};
-        if (!p.name?.trim()) issues.personal.name = "Full name is required";
-        if (!p.email?.trim()) issues.personal.email = "Email is required";
-        else if (!validateEmail(p.email.trim())) issues.personal.email = "Enter a valid email";
-
-        if (!Array.isArray(resume.education) || resume.education.length === 0) {
-            issues.education.push("Add at least one education entry");
-        } else {
-            resume.education.forEach((ed) => {
-                const rowErr = {};
-                if (!ed.institution?.trim()) rowErr.institution = "Institution required";
-                if (!ed.degree?.trim()) rowErr.degree = "Degree required";
-                if (!ed.year?.trim()) rowErr.year = "Year required";
-                issues.education.push(rowErr);
-            });
-        }
-
-        if (Array.isArray(resume.experience) && resume.experience.length > 0) {
-            resume.experience.forEach((ex) => {
-                const rowErr = {};
-                if (ex.company !== undefined && ex.company !== null && String(ex.company).trim() === "") rowErr.company = "Company required";
-                if (ex.role !== undefined && ex.role !== null && String(ex.role).trim() === "") rowErr.role = "Role required";
-                if (ex.duration !== undefined && ex.duration !== null && String(ex.duration).trim() === "") rowErr.duration = "Duration required";
-                issues.experience.push(rowErr);
-            });
-        }
-
-        const skillsList = Array.isArray(resume.skills) ? resume.skills.filter(Boolean) : [];
-        if (skillsList.length === 0) issues.skills.list = "Add at least one skill";
-
-        if (!Array.isArray(resume.projects) || resume.projects.length === 0) {
-            issues.projects.push("Add at least one project");
-        } else {
-            resume.projects.forEach((pjt) => {
-                const rowErr = {};
-                if (!pjt.title?.trim()) rowErr.title = "Title required";
-                issues.projects.push(rowErr);
-            });
-        }
-
-        return issues;
-    }, [resume]);
-
-    const hasErrors = useMemo(() => {
-        const pErr = Object.keys(validation.personal).length > 0;
-        const sErr = !!validation.skills.list;
-        const eduErr = validation.education.some((e) => Object.keys(e).length > 0) || validation.education.includes("Add at least one education entry");
-        const expErr = validation.experience.some((e) => Object.keys(e).length > 0);
-        const projErr = validation.projects.some((e) => Object.keys(e).length > 0) || validation.projects.includes("Add at least one project");
-        return pErr || sErr || eduErr || expErr || projErr;
-    }, [validation]);
+function BuilderInner() {
+    const { state, actions, validation, hasErrors } = useResume();
+    const resume = state.resume;
+    const touched = state.ui.touched;
+    const sending = state.ui.sending;
+    const message = state.ui.message;
 
     const handleSend = async (e) => {
         e?.preventDefault();
-        setTouched(true);
-        setMessage(null);
+        actions.setTouched(true);
+        actions.setMessage(null);
         if (hasErrors) {
-            setMessage({ type: "error", text: "Please fill all required details before sending." });
+            actions.setMessage({ type: "error", text: "Please fill all required details before sending." });
             return;
         }
-        setSending(true);
+        actions.setSending(true);
         try {
             await new Promise((res) => setTimeout(res, 700));
             console.log("Resume payload:", resume);
-            setMessage({ type: "success", text: "Resume sent successfully" });
+            actions.setMessage({ type: "success", text: "Resume sent successfully" });
         } catch (err) {
-            setMessage({ type: "error", text: "Failed to send. Try again." });
+            actions.setMessage({ type: "error", text: "Failed to send. Try again." });
         } finally {
-            setSending(false);
+            actions.setSending(false);
         }
     };
 
@@ -203,23 +137,23 @@ export default function Builder() {
 
                 <form className="builder-form" onSubmit={handleSend} noValidate>
                     <div ref={personalRef}>
-                        <PersonalInfo value={resume.personal} onChange={(v) => setSection("personal", v)} errors={touched ? validation.personal : {}} />
+                        <PersonalInfo />
                     </div>
 
                     <div ref={educationRef}>
-                        <Education value={resume.education} onChange={(v) => setSection("education", v)} errors={touched ? validation.education : []} />
+                        <Education />
                     </div>
 
                     <div ref={experienceRef}>
-                        <Experience value={resume.experience} onChange={(v) => setSection("experience", v)} errors={touched ? validation.experience : []} />
+                        <Experience />
                     </div>
 
                     <div ref={skillsRef}>
-                        <Skills value={resume.skills} onChange={(v) => setSection("skills", v)} errors={touched ? validation.skills : {}} />
+                        <Skills />
                     </div>
 
                     <div ref={projectsRef}>
-                        <Projects value={resume.projects} onChange={(v) => setSection("projects", v)} errors={touched ? validation.projects : []} />
+                        <Projects />
                     </div>
 
                     <div className="form-actions">
@@ -231,9 +165,7 @@ export default function Builder() {
                             type="button"
                             className="cc-btn secondary"
                             onClick={() => {
-                                setResume(EMPTY);
-                                setTouched(false);
-                                setMessage(null);
+                                actions.reset();
                                 window.scrollTo({ top: 0, behavior: "smooth" });
                             }}
                         >
@@ -342,5 +274,13 @@ export default function Builder() {
                 })}
             </nav>
         </div>
+    );
+}
+
+export default function Builder() {
+    return (
+        <ResumeProvider>
+            <BuilderInner />
+        </ResumeProvider>
     );
 }

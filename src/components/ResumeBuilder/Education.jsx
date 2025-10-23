@@ -1,21 +1,19 @@
 import React from "react";
 import { GraduationCap } from "lucide-react";
+import { useResume } from "../../state/ResumeContext";
 
-export default function Education({
-    value = [],
-    onChange = () => { },
-    errors = [],
-}) {
-    const list = Array.isArray(value) ? value : [];
+export default function Education() {
+    const { state, actions, validation } = useResume();
+    const list = Array.isArray(state.resume.education) ? state.resume.education : [];
+    const errors = state.ui.touched ? validation.education : [];
 
     const updateAt = (i, field, val) =>
-        onChange(list.map((it, idx) => (idx === i ? { ...it, [field]: val } : it)));
-    const add = () =>
-        onChange([...list, { institution: "", degree: "", year: "" }]);
-    const remove = (i) => onChange(list.filter((_, idx) => idx !== i));
+        actions.setSection("education", list.map((it, idx) => (idx === i ? { ...it, [field]: val } : it)));
+    const add = () => actions.setSection("education", [...list, { institution: "", degree: "", year: "" }]);
+    const remove = (i) => actions.setSection("education", list.filter((_, idx) => idx !== i));
 
     const fillExample = () => {
-        onChange([
+        actions.setSection("education", [
             {
                 institution: "Dhirubhai Ambani University",
                 degree: "B.Tech - Information and Communication Technology",
