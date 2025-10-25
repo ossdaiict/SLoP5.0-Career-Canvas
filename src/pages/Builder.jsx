@@ -7,6 +7,7 @@ import Projects from "../components/ResumeBuilder/Projects";
 import "../components/styles/resume.css";
 import resumeImage from "../assets/image.png";
 import { ResumeProvider, useResume } from "../state/ResumeContext";
+import { exportResumePDF } from "../utils/pdfExport";
 
 function BuilderInner() {
     const { state, actions, validation, hasErrors } = useResume();
@@ -40,6 +41,7 @@ function BuilderInner() {
     const experienceRef = useRef(null);
     const skillsRef = useRef(null);
     const projectsRef = useRef(null);
+    const previewRef = useRef(null);
 
     const steps = [
         { id: "personal", label: "Personal", ref: personalRef },
@@ -57,8 +59,7 @@ function BuilderInner() {
     const experienceDone =
         Array.isArray(resume.experience) &&
         resume.experience.length > 0 &&
-        validation.experience.length === resume.experience.length &&
-        validation.experience.every((e) => Object.keys(e).length === 0);
+        !validation.experience.some((e) => Object.keys(e).length > 0);
     const skillsDone = !validation.skills.list;
     const projectsDone = !(
         validation.projects.includes("Add at least one project") ||
@@ -178,7 +179,7 @@ function BuilderInner() {
                     {message && <div className={`submit-message ${message.type === "success" ? "msg-success" : "msg-error"}`}>{message.text}</div>}
                 </form>
 
-                <aside className="builder-preview" aria-label="Live preview">
+                <aside className="builder-preview" aria-label="Live preview" ref={previewRef}>
                     <div className="preview-card">
                         <div className="preview-header">
                             <div>
@@ -250,6 +251,24 @@ function BuilderInner() {
                         <div className="preview-foot">
                             <div className="muted small">This preview is live - it will not be sent to employers until you press "Send Resume".</div>
                         </div>
+
+                        <button
+                            type="button"
+                            className="cc-btn primary"
+                            disabled={(touched && hasErrors)}
+                                style={{ marginTop: '12px', width: '100%' }}
+                            onClick={() => {
+                                actions.setTouched(true);
+                                if (hasErrors && touched) {
+                                    actions.setMessage({ type: "error", text: "Fix all errors before downloading PDF." });
+                                    return;
+                                }
+                                exportResumePDF(previewRef, resume.personal?.name || "YourName");
+                            }}
+                        >
+                            Download PDF
+                        </button>
+
                     </div>
                 </aside>
 
