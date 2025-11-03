@@ -1,0 +1,38 @@
+.home-root { background: #ffffff; }
+.home-root .hero-gradient { background: linear-gradient(to bottom, #eef2ff, transparent 50%, #ffffff); }
+.home-root .home-title { color: #0f172a; }
+.home-root .home-sub { color: #475569; }
+.home-root .home-cta-primary { background:#0f172a; color:#ffffff; border:0; }
+.home-root .home-cta-primary:hover { background:#111827; }
+.home-root .home-cta-secondary { border:1px solid #e5e7eb; color:#0f172a; background:#ffffff; }
+.home-root .home-cta-secondary:hover { background:#f8fafc; }
+.home-root .feature-card { background:#ffffff; border:1px solid #e5e7eb; }
+.home-root .feature-title { color:#0f172a; font-weight:600; }
+.home-root .feature-sub { color:#475569; font-size:0.9rem; }
+.home-root .icon-wrap { width:48px; height:48px; border-radius:12px; display:grid; place-items:center; }
+.home-root .icon-wrap.indigo { background:#eef2ff; color:#4f46e5; }
+.home-root .icon-wrap.rose { background:#ffe4e6; color:#e11d48; }
+.home-root .icon-wrap.emerald { background:#d1fae5; color:#059669; }
+.home-root .info-card { background:#ffffff; border:1px solid #e5e7eb; }
+.home-root .info-title { color:#0f172a; font-weight:600; }
+.home-root .info-sub { color:#475569; }
+
+/* Dark variant */
+.home-root.home-dark { background:#0b1220; }
+.home-root.home-dark .hero-gradient { background: linear-gradient(to bottom, rgba(99,102,241,0.16), transparent 50%, #0b1220); }
+.home-root.home-dark .home-title { color:#e5e7eb; }
+.home-root.home-dark .home-sub { color:#cbd5e1; }
+.home-root.home-dark .home-cta-primary { background:#111827; color:#e5e7eb; }
+.home-root.home-dark .home-cta-primary:hover { background:#0b1220; }
+.home-root.home-dark .home-cta-secondary { border:1px solid rgba(203,213,225,0.18); color:#e5e7eb; background:#0f172a; }
+.home-root.home-dark .home-cta-secondary:hover { background:#141c2c; }
+.home-root.home-dark .feature-card { background:#0f172a; border:1px solid #1f2a44; box-shadow:0 10px 30px rgba(0,0,0,0.35); }
+.home-root.home-dark .feature-title { color:#e5e7eb; }
+.home-root.home-dark .feature-sub { color:#93a4bd; }
+.home-root.home-dark .icon-wrap.indigo { background:#0b162a; color:#a5b4fc; }
+.home-root.home-dark .icon-wrap.rose { background:#2a0b13; color:#fecdd3; }
+.home-root.home-dark .icon-wrap.emerald { background:#081c16; color:#a7f3d0; }
+.home-root.home-dark .info-card { background:#0f172a; border:1px solid #1f2a44; }
+.home-root.home-dark .info-title { color:#e5e7eb; }
+.home-root.home-dark .info-sub { color:#93a4bd; }
+

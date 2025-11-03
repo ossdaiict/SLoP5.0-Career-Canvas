@@ -7,9 +7,11 @@ import Projects from "../components/ResumeBuilder/Projects";
 import "../components/styles/resume.css";
 import resumeImage from "../assets/image.png";
 import { ResumeProvider, useResume } from "../state/ResumeContext";
+import { useTheme } from "../state/ThemeContext";
 import { exportResumePDF } from "../utils/pdfExport";
 
 function BuilderInner() {
+    const { theme } = useTheme();
     const { state, actions, validation, hasErrors } = useResume();
     const resume = state.resume;
     const touched = state.ui.touched;
@@ -113,7 +115,7 @@ function BuilderInner() {
     }, []);
 
     return (
-        <div className="builder-root">
+        <div className={`builder-root ${theme === "dark" ? "builder-dark" : ""}`}>
             <div className="cc-resume-container layout-grid">
                 <header className="builder-header-card">
                     <div className="header-content">
