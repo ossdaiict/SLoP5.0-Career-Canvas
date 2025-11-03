@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
+import { useTheme } from "../../state/ThemeContext";
 import { Link } from "react-router-dom";
+import { Sun, Moon } from "lucide-react";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     function handleResize() {
@@ -31,6 +34,15 @@ export default function Header() {
                     <Link to="/builder" className="hover:text-gray-200">
                         Resume Builder
                     </Link>
+                    <button
+                        onClick={toggleTheme}
+                        className="hover:text-gray-200 border border-white/20 rounded-full px-3 py-1 text-sm flex items-center gap-2"
+                        aria-label="Toggle theme"
+                        title="Toggle theme"
+                    >
+                        {theme === "dark" ? <Moon size={16} /> : <Sun size={16} />}
+                        <span className="hidden md:inline">{theme === "dark" ? "Dark" : "Light"}</span>
+                    </button>
                 </div>
             </nav>
         )}
@@ -65,6 +77,14 @@ export default function Header() {
                     >
                     Resume Builder
                     </Link>
+                    <button
+                        onClick={() => { toggleTheme(); setOpen(false); }}
+                        className="text-left flex items-center gap-2 py-2 px-1 border border-white/10 rounded"
+                        aria-label="Toggle theme"
+                    >
+                        {theme === "dark" ? <Moon size={16} /> : <Sun size={16} />}
+                        <span>Theme: {theme === "dark" ? "Dark" : "Light"}</span>
+                    </button>
                 </nav>
             </div>
             )}
